@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --void:            #030306;
+  --abyss:           #07070f;
+  --surface:         #0d0d1a;
+  --elevated:        #131326;
+  --raised:          #191932;
+
+  --border:          rgba(138, 95, 210, 0.14);
+  --border-bright:   rgba(168, 85, 247, 0.38);
+  --border-gold:     rgba(201, 150, 58, 0.28);
+
+  --accent:          #a855f7;
+  --accent-dim:      rgba(168, 85, 247, 0.14);
+  --accent-glow:     rgba(168, 85, 247, 0.22);
+
+  --gold:            #c9963a;
+  --gold-dim:        rgba(201, 150, 58, 0.12);
+  --gold-glow:       rgba(201, 150, 58, 0.2);
+
+  --text-primary:    #ede8f5;
+  --text-secondary:  #8a7f9e;
+  --text-muted:      #4a435a;
+
+  --success:         #10b981;
+  --success-dim:     rgba(16, 185, 129, 0.12);
+  --error:           #f87171;
+  --error-dim:       rgba(248, 113, 113, 0.1);
+
+  --font-display:    'Cormorant Garamond', Georgia, serif;
+  --font-body:       'DM Sans', system-ui, sans-serif;
+  --font-mono:       'JetBrains Mono', 'Cascadia Code', monospace;
+
+  --radius-sm:       0.5rem;
+  --radius:          0.875rem;
+  --radius-lg:       1.25rem;
+  --radius-xl:       1.75rem;
+
+  --shadow-sm:       0 1px 3px rgba(0,0,0,0.6);
+  --shadow-md:       0 4px 16px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.6);
+  --shadow-lg:       0 8px 40px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.5);
+  --shadow-glow:     0 0 40px rgba(168,85,247,0.1), 0 8px 40px rgba(0,0,0,0.55);
+  --shadow-gold:     0 0 30px rgba(201,150,58,0.12), 0 4px 20px rgba(0,0,0,0.5);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+
+/* ─── Ambient orbs ─────────────────────────────────────── */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+body::before {
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(168,85,247,0.1) 0%, transparent 68%);
+  top: -250px;
+  left: -200px;
+  animation: orbDrift1 28s ease-in-out infinite;
+}
+body::after {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(201,150,58,0.08) 0%, transparent 68%);
+  bottom: -150px;
+  right: -150px;
+  animation: orbDrift2 22s ease-in-out infinite;
+}
+
+@keyframes orbDrift1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%     { transform: translate(80px,60px) scale(1.08); }
+  66%     { transform: translate(-40px,90px) scale(0.93); }
+}
+@keyframes orbDrift2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%     { transform: translate(-70px,-50px) scale(1.12); }
+}
+
+/* ─── Grain overlay ────────────────────────────────────── */
+#root::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── Scrollbars ───────────────────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(138, 95, 210, 0.2) transparent;
+}
+*::-webkit-scrollbar       { width: 4px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: rgba(138, 95, 210, 0.22);
+  border-radius: 2px;
+}
+
+button { font-family: inherit; }

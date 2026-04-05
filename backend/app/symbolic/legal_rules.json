@@ -1,0 +1,211 @@
+[
+  {
+    "id": "CONTRACT_001",
+    "name": "Missing Consideration",
+    "trigger_keywords": ["consideration", "gratuitous", "no payment", "without payment", "gift promise"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "A contract without consideration is void ab initio under common law.",
+    "recommended_action": "Advise client to establish adequate consideration or restructure the agreement as a deed.",
+    "severity": "HIGH",
+    "legal_reference": "Currie v Misa [1875] LR 10 Ex 153"
+  },
+  {
+    "id": "CONTRACT_002",
+    "name": "Lack of Capacity — Minor",
+    "trigger_keywords": ["minor", "under 18", "infant", "capacity", "age of majority"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "Contracts entered into by a minor are voidable at the minor's election, except for necessaries.",
+    "recommended_action": "Verify the age of contracting parties; obtain parental or guardian ratification where required.",
+    "severity": "HIGH",
+    "legal_reference": "Minors' Contracts Act 1987 (UK); Restatement (Second) of Contracts §14"
+  },
+  {
+    "id": "CONTRACT_003",
+    "name": "Misrepresentation",
+    "trigger_keywords": ["misrepresentation", "false statement", "induced", "fraudulent", "negligent misrep"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "A contract induced by misrepresentation is voidable and may attract damages under the Misrepresentation Act 1967.",
+    "recommended_action": "Gather evidence of the false statement and its inducing effect; consider rescission and/or damages claim.",
+    "severity": "HIGH",
+    "legal_reference": "Misrepresentation Act 1967 s.2(1); Derry v Peek [1889] 14 App Cas 337"
+  },
+  {
+    "id": "CONTRACT_004",
+    "name": "Restraint of Trade Clause",
+    "trigger_keywords": ["restraint of trade", "non-compete", "non compete", "restrictive covenant", "post-termination restriction"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "Restraint of trade clauses are prima facie void unless reasonable between the parties and in the public interest.",
+    "recommended_action": "Assess geographic scope, duration, and legitimate business interest; blue-pencil if partially enforceable.",
+    "severity": "MEDIUM",
+    "legal_reference": "Nordenfelt v Maxim Nordenfelt [1894] AC 535"
+  },
+  {
+    "id": "NDA_001",
+    "name": "NDA Breach — Notification Obligation",
+    "trigger_keywords": ["nda", "non-disclosure", "confidentiality breach", "disclosed without", "leaked", "breach of confidence"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "Breach of an NDA triggers an immediate obligation to notify legal counsel and assess injunctive relief within 48 hours.",
+    "recommended_action": "Notify legal counsel immediately; preserve evidence; apply for emergency injunction within 48 hours if disclosure is ongoing.",
+    "severity": "HIGH",
+    "legal_reference": "Coco v AN Clark (Engineers) Ltd [1969] RPC 41"
+  },
+  {
+    "id": "NDA_002",
+    "name": "Residual Knowledge Clause",
+    "trigger_keywords": ["residual knowledge", "residuals clause", "retained in unaided memory", "general skills"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "A residuals clause may permit a recipient to use information retained in unaided memory, limiting injunctive relief.",
+    "recommended_action": "Review the NDA for residuals carve-outs; advise client on scope of protection available.",
+    "severity": "MEDIUM",
+    "legal_reference": "Standard industry practice — see major cloud provider NDA templates"
+  },
+  {
+    "id": "TORT_001",
+    "name": "Duty of Care — Negligence",
+    "trigger_keywords": ["negligence", "duty of care", "reasonable care", "neighbour principle", "foreseeable"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "A duty of care arises where harm to the claimant was reasonably foreseeable, there is proximity, and it is fair and reasonable to impose a duty.",
+    "recommended_action": "Establish the three-part Caparo test; obtain expert evidence on the standard of care applicable to the defendant.",
+    "severity": "HIGH",
+    "legal_reference": "Caparo Industries plc v Dickman [1990] 2 AC 605"
+  },
+  {
+    "id": "TORT_002",
+    "name": "Occupiers' Liability",
+    "trigger_keywords": ["occupier", "premises liability", "visitor", "trespasser", "slip and fall", "occupiers liability"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "An occupier owes a common duty of care to lawful visitors and a lower duty of humanity to trespassers.",
+    "recommended_action": "Classify the claimant's status (visitor vs trespasser); review warning signs and maintenance records.",
+    "severity": "MEDIUM",
+    "legal_reference": "Occupiers' Liability Act 1957; Occupiers' Liability Act 1984"
+  },
+  {
+    "id": "TORT_003",
+    "name": "Defamation — Publication Requirement",
+    "trigger_keywords": ["defamation", "libel", "slander", "publication", "reputation", "false statement of fact"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "A defamation claim requires proof of a false statement of fact, publication to a third party, identification of the claimant, and resulting damage.",
+    "recommended_action": "Assess publication reach and seriousness threshold; consider defences of truth, honest opinion, or public interest.",
+    "severity": "MEDIUM",
+    "legal_reference": "Defamation Act 2013 s.1; Sim v Stretch [1936] 2 All ER 1237"
+  },
+  {
+    "id": "IP_001",
+    "name": "Copyright Infringement",
+    "trigger_keywords": ["copyright", "infringement", "reproduction", "copying", "fair use", "fair dealing", "intellectual property"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "Copyright infringement occurs when a substantial part of a protected work is reproduced without licence or statutory exemption.",
+    "recommended_action": "Conduct a substantial part analysis; determine if fair dealing or fair use defence applies; issue takedown or cease-and-desist.",
+    "severity": "HIGH",
+    "legal_reference": "Copyright, Designs and Patents Act 1988 s.16; 17 U.S.C. §107"
+  },
+  {
+    "id": "IP_002",
+    "name": "Trade Mark Infringement",
+    "trigger_keywords": ["trade mark", "trademark", "passing off", "brand infringement", "identical mark", "likelihood of confusion"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "Trade mark infringement requires use of an identical or similar sign for identical or similar goods/services causing a likelihood of confusion.",
+    "recommended_action": "Run clearance search; assess likelihood of confusion; send cease-and-desist; consider opposition or cancellation proceedings.",
+    "severity": "HIGH",
+    "legal_reference": "Trade Marks Act 1994 s.10; EU Trade Mark Regulation 2017/1001 Art. 9"
+  },
+  {
+    "id": "IP_003",
+    "name": "Patent Claim Scope",
+    "trigger_keywords": ["patent", "claims", "prior art", "novelty", "obviousness", "inventive step"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "Patent infringement is assessed against each element of the claim; prior art or lack of inventive step may invalidate the patent.",
+    "recommended_action": "Obtain a claim chart; commission freedom-to-operate opinion; consider invalidity challenge if prior art exists.",
+    "severity": "HIGH",
+    "legal_reference": "Patents Act 1977 s.60; 35 U.S.C. §271; Actavis v Eli Lilly [2017] UKSC 48"
+  },
+  {
+    "id": "EMPLOYMENT_001",
+    "name": "Unfair Dismissal",
+    "trigger_keywords": ["unfair dismissal", "wrongful termination", "dismissal", "redundancy", "constructive dismissal"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "An employee with two years' qualifying service may claim unfair dismissal; the employer must show a fair reason and follow a fair procedure.",
+    "recommended_action": "Verify qualifying service period; review dismissal reason and ACAS Code of Practice compliance; advise on ET1 time limits (3 months less one day).",
+    "severity": "HIGH",
+    "legal_reference": "Employment Rights Act 1996 s.98; ACAS Code of Practice on Disciplinary Procedures"
+  },
+  {
+    "id": "EMPLOYMENT_002",
+    "name": "Discrimination — Protected Characteristic",
+    "trigger_keywords": ["discrimination", "protected characteristic", "race", "disability", "religion", "age discrimination", "equal pay"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "Direct or indirect discrimination on a protected characteristic is unlawful; the employer bears the burden of justification once a prima facie case is established.",
+    "recommended_action": "Identify the protected characteristic; gather comparator evidence; advise claimant on ACAS Early Conciliation prior to ET1.",
+    "severity": "HIGH",
+    "legal_reference": "Equality Act 2010 s.4, s.13, s.19"
+  },
+  {
+    "id": "EMPLOYMENT_003",
+    "name": "Notice Period — Wrongful Dismissal",
+    "trigger_keywords": ["notice period", "wrongful dismissal", "garden leave", "payment in lieu", "pilon", "summary dismissal"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "Wrongful dismissal is a common law breach of contract claim available from day one; damages are limited to the notice period remuneration.",
+    "recommended_action": "Calculate correct notice entitlement; check for PILON clause; advise on bringing claim in county court or Employment Tribunal.",
+    "severity": "MEDIUM",
+    "legal_reference": "Employment Rights Act 1996 s.86; common law implied term of reasonable notice"
+  },
+  {
+    "id": "PROPERTY_001",
+    "name": "Adverse Possession",
+    "trigger_keywords": ["adverse possession", "squatter", "limitation period", "open possession", "title by possession", "animus possidendi"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "A squatter may acquire title after 12 years of factual possession with the requisite intention to possess under unregistered land rules; 10 years under the LRA 2002.",
+    "recommended_action": "Check Land Registry title; serve counter-notice if application received; assess whether possession has been interrupted.",
+    "severity": "MEDIUM",
+    "legal_reference": "Land Registration Act 2002 Sch. 6; Limitation Act 1980 s.15"
+  },
+  {
+    "id": "PROPERTY_002",
+    "name": "Easement — Prescription",
+    "trigger_keywords": ["easement", "right of way", "prescriptive", "prescription", "long use", "lost modern grant"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "A prescriptive easement may be established by 20 years of continuous, open, and non-contentious use as of right.",
+    "recommended_action": "Document historic user evidence; investigate title deeds for express grants; advise on registration requirements.",
+    "severity": "MEDIUM",
+    "legal_reference": "Prescription Act 1832; R v Oxfordshire CC ex parte Sunningwell Parish Council [2000] 1 AC 335"
+  },
+  {
+    "id": "STATUTE_001",
+    "name": "Limitation Period — General Contract",
+    "trigger_keywords": ["limitation", "time-barred", "statute of limitations", "limitation period", "six years", "claim period"],
+    "condition": "regex_match",
+    "pattern": "limitation|time.?bar|statute of limitation|6.?year|six.?year",
+    "consequence": "A simple contract claim becomes time-barred six years from the date of breach; specialty contracts attract a 12-year period.",
+    "recommended_action": "Calculate breach date and remaining limitation window; advise client to issue proceedings or a protective claim before expiry.",
+    "severity": "HIGH",
+    "legal_reference": "Limitation Act 1980 s.5 (contract); s.8 (specialty)"
+  },
+  {
+    "id": "STATUTE_002",
+    "name": "Force Majeure Clause",
+    "trigger_keywords": ["force majeure", "act of god", "pandemic", "impossibility", "frustration", "unforeseeable event"],
+    "condition": "keyword_match",
+    "pattern": "",
+    "consequence": "Force majeure clauses are construed strictly; frustration may discharge the contract only if performance is radically different from that contracted for.",
+    "recommended_action": "Review clause wording; check notification obligations; assess whether the event truly prevents (not merely hinders) performance.",
+    "severity": "MEDIUM",
+    "legal_reference": "Davis Contractors Ltd v Fareham UDC [1956] AC 696; Canary Wharf v EMA [2019] EWHC 335"
+  }
+]

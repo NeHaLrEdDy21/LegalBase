@@ -1,0 +1,9 @@
+{
+  "pythonVersion": "3.11",
+  "venvPath": ".",
+  "include": ["app", "tests"],
+  "extraPaths": ["."],
+  "typeCheckingMode": "basic",
+  "reportMissingImports": false,
+  "reportMissingModuleSource": false
+}

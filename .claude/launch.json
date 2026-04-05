@@ -1,0 +1,34 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Frontend (Vite)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "frontend", "run", "dev"],
+      "port": 5173
+    },
+    {
+      "name": "Backend (FastAPI)",
+      "runtimeExecutable": "uvicorn",
+      "runtimeArgs": ["app.main:app", "--app-dir", "backend", "--host", "0.0.0.0", "--port", "8000", "--reload"],
+      "port": 8000
+    },
+    {
+      "name": "NIM — Gemma 4 31B (self-hosted, ≥64 GB VRAM)",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": [
+        "run", "--rm",
+        "--name", "legalmind-nim-gemma4-31b",
+        "--gpus", "all",
+        "--ipc", "host",
+        "--shm-size", "16g",
+        "-e", "NGC_API_KEY",
+        "-v", "${HOME}/.cache/nim/gemma-4-31b:/root/.cache/nim",
+        "-p", "8001:8000",
+        "nvcr.io/nim/google/gemma-4-31b-it:latest"
+      ],
+      "port": 8001,
+      "note": "Requires ≥64 GB GPU VRAM. For cloud inference (no GPU), set LLM_PROVIDER=nim + NGC_API_KEY in backend/.env instead."
+    }
+  ]
+}

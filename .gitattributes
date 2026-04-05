@@ -1,0 +1,7 @@
+# Normalize line endings for cross-platform development
+* text=auto
+
+# Force Unix LF for shell scripts and Docker files
+*.sh text eol=lf
+Dockerfile text eol=lf
+nginx.conf text eol=lf
