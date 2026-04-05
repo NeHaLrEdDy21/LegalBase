@@ -12,7 +12,7 @@ import type {
   RuleUpdate,
 } from "../types";
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000/api/v1";
+const BASE_URL = import.meta.env.VITE_API_URL ?? "/api/v1";
 
 // Gemma 4 with thinking mode can take 2-3 min for complex legal reasoning.
 // Set a 5-minute timeout to accommodate extended inference.
