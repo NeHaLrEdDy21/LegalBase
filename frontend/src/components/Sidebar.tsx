@@ -1,6 +1,6 @@
 import styles from "./Sidebar.module.css";
 
-export type AppView = "chat" | "knowledge-base" | "rules";
+export type AppView = "chat" | "knowledge-base" | "rules" | "analyzer" | "doc-generator" | "search";
 
 interface Props {
   firstName: string;
@@ -62,6 +62,24 @@ export function Sidebar({ firstName, email, onSignOut, sessionId, onNewChat, vie
           onClick={() => onViewChange("rules")}
           icon={<ShieldIcon />}
           label="Symbolic Rules"
+        />
+        <NavItem
+          active={view === "search"}
+          onClick={() => onViewChange("search")}
+          icon={<SearchIcon />}
+          label="Legal Search"
+        />
+        <NavItem
+          active={view === "analyzer"}
+          onClick={() => onViewChange("analyzer")}
+          icon={<AnalyzeIcon />}
+          label="Doc Analyzer"
+        />
+        <NavItem
+          active={view === "doc-generator"}
+          onClick={() => onViewChange("doc-generator")}
+          icon={<DocGenIcon />}
+          label="Doc Generator"
         />
       </nav>
 
@@ -149,6 +167,38 @@ function ShieldIcon() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"
          strokeLinecap="round" strokeLinejoin="round" width="15" height="15">
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"
+         strokeLinecap="round" strokeLinejoin="round" width="15" height="15">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  );
+}
+
+function AnalyzeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"
+         strokeLinecap="round" strokeLinejoin="round" width="15" height="15">
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </svg>
+  );
+}
+
+function DocGenIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"
+         strokeLinecap="round" strokeLinejoin="round" width="15" height="15">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="12" y1="18" x2="12" y2="12" />
+      <line x1="9" y1="15" x2="15" y2="15" />
     </svg>
   );
 }

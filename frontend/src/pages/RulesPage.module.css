@@ -105,6 +105,28 @@
   transform: translateY(-1px);
 }
 
+/* ── Search input ────────────────────────────────────────────── */
+.searchInput {
+  padding: 0.5rem 1rem;
+  background: rgba(13, 13, 26, 0.7);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  min-width: 200px;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.1);
+}
+
+.searchInput::placeholder {
+  color: var(--text-muted);
+}
+
 /* ── Feedback ─────────────────────────────────────────────── */
 .success {
   display: flex;

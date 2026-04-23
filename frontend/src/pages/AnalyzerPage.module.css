@@ -1,0 +1,261 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #e8dfc8;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: #8a9bb0;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.inputSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: #1a1f2e;
+  border: 1px solid #2a3040;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.label {
+  font-size: 0.8rem;
+  color: #8a9bb0;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.select {
+  background: #0f1319;
+  border: 1px solid #2a3040;
+  color: #c8d4e0;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.select:focus { outline: none; border-color: #4a6fa5; }
+
+.textarea {
+  background: #0f1319;
+  border: 1px solid #2a3040;
+  color: #c8d4e0;
+  padding: 0.875rem;
+  border-radius: 8px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 200px;
+  transition: border-color 0.2s;
+}
+
+.textarea:focus { outline: none; border-color: #4a6fa5; }
+.textarea::placeholder { color: #3a4a5a; }
+
+.inputFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.charCount { font-size: 0.75rem; color: #4a5a6a; }
+
+.analyzeBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #2d5fa5;
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.analyzeBtn:hover:not(:disabled) { background: #3570c0; }
+.analyzeBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.error {
+  background: rgba(220, 38, 38, 0.12);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  color: #fca5a5;
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.resultHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.docTypeBadge {
+  background: rgba(74, 111, 165, 0.2);
+  border: 1px solid rgba(74, 111, 165, 0.4);
+  color: #7ab0e8;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.summaryTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #c8d4e0;
+}
+
+.summary {
+  background: #1a1f2e;
+  border-left: 3px solid #4a6fa5;
+  padding: 0.875rem 1rem;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.9rem;
+  color: #a8b8c8;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.section {
+  background: #1a1f2e;
+  border: 1px solid #2a3040;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.section.blue { border-top: 2px solid #4a6fa5; }
+.section.purple { border-top: 2px solid #7c5cbf; }
+.section.red { border-top: 2px solid #c0392b; }
+.section.orange { border-top: 2px solid #d97706; }
+.section.green { border-top: 2px solid #27ae60; }
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  color: #c8d4e0;
+}
+
+.count {
+  margin-left: auto;
+  background: rgba(255,255,255,0.08);
+  padding: 0.1rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  color: #8a9bb0;
+}
+
+.itemList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.item {
+  font-size: 0.8rem;
+  color: #9aabb8;
+  line-height: 1.5;
+  padding-left: 0.875rem;
+  position: relative;
+}
+
+.item::before {
+  content: "›";
+  position: absolute;
+  left: 0;
+  color: #4a6fa5;
+  font-weight: bold;
+}
+
+.jurisdictionCard {
+  background: #1a1f2e;
+  border: 1px solid #2a3040;
+  border-top: 2px solid #2d8f6f;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.jurisdictionText {
+  font-size: 0.85rem;
+  color: #9aabb8;
+  line-height: 1.6;
+  margin: 0.5rem 0 0;
+}
+
+.rawDetails { margin-top: 0.5rem; }
+
+.rawSummary {
+  font-size: 0.8rem;
+  color: #5a6a7a;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  user-select: none;
+}
+
+.rawSummary:hover { color: #8a9bb0; }
+
+.rawText {
+  background: #0a0e15;
+  border: 1px solid #1e2530;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 0.75rem;
+  color: #7a8a9a;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

@@ -554,3 +554,7 @@ This is the core explainability guarantee of the neuro-symbolic design. A purely
 ---
 
 *End of Neuro-Symbolic Technical Design Reference v1.0.0*
+
+
+cd "D:\mini project\backend" 
+>> uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

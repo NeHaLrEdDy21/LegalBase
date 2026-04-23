@@ -13,13 +13,13 @@ Supports two modes selected automatically from the base_url:
   ───────────
   base_url = "http://localhost:8001/v1"
   api_key  = "not-used"   (no auth on local NIM)
-  Requires ≥64 GB VRAM to host Gemma 4 31B.
 
-Gemma 4 features
-────────────────
-  * enable_thinking = True  → passes chat_template_kwargs to activate the
-    model's extended chain-of-thought reasoning (thinking tokens are stripped
-    from the visible response before returning to the caller).
+DeepSeek v3.2 features
+──────────────────────
+  * enable_thinking = True  → passes chat_template_kwargs={"thinking": True} to
+    activate the model's extended chain-of-thought reasoning.
+  * Thinking tokens arrive via the ``reasoning_content`` field on each delta
+    chunk — captured for logging but not included in the visible response.
   * Streams internally and aggregates — avoids proxy/gateway timeouts on long
     legal reasoning responses without requiring SSE on the FastAPI side.
 """
@@ -56,32 +56,37 @@ class NIMClient:
         NIM endpoint. Defaults to the NVIDIA-hosted cloud API.
         Set to ``"http://localhost:8001/v1"`` when running self-hosted NIM.
     model : str
-        NIM model identifier, e.g. ``"google/gemma-4-31b-it"``.
+        NIM model identifier, e.g. ``"deepseek-ai/deepseek-v3.2"``.
     api_key : str
         NGC Personal API key for the hosted endpoint.
         Pass ``"not-used"`` for local self-hosted NIM (no auth required).
     temperature : float
-        Sampling temperature. NIM docs recommend 1.0 for Gemma 4.
+        Sampling temperature.
+    top_p : float
+        Nucleus sampling probability.
     max_tokens : int
-        Maximum tokens in the completion (up to 32 768 for Gemma 4).
+        Maximum tokens in the completion.
     enable_thinking : bool
-        Pass ``chat_template_kwargs={"enable_thinking": True}`` to activate
-        Gemma 4's extended chain-of-thought reasoning. Thinking tokens are
-        automatically stripped from the visible answer.
+        Pass ``chat_template_kwargs={"thinking": True}`` to activate
+        DeepSeek's extended chain-of-thought reasoning. Thinking tokens
+        arrive via the ``reasoning_content`` delta field and are not
+        included in the visible response.
     """
 
     def __init__(
         self,
         base_url: str = HOSTED_BASE_URL,
-        model: str = "google/gemma-4-31b-it",
+        model: str = "deepseek-ai/deepseek-v3.2",
         api_key: str = "not-used",
         temperature: float = 1.0,
-        max_tokens: int = 16384,
+        top_p: float = 0.95,
+        max_tokens: int = 8192,
         enable_thinking: bool = True,
     ) -> None:
         self._client = OpenAI(base_url=base_url, api_key=api_key)
         self.model = model
         self.temperature = temperature
+        self.top_p = top_p
         self.max_tokens = max_tokens
         self.enable_thinking = enable_thinking
 
@@ -119,15 +124,16 @@ class NIMClient:
         Stream the completion from NIM and aggregate into a single LLMResponse.
 
         Streaming internally avoids proxy/gateway timeouts on long responses.
-        Gemma 4 thinking tokens (enclosed in <think>...</think>) are stripped
-        from the returned text — they're captured but not shown to the user.
+        DeepSeek thinking tokens arrive in the ``reasoning_content`` field of
+        each delta chunk — captured for logging but not included in the
+        visible response (only ``content`` is returned to the caller).
         """
         start = time.perf_counter()
 
-        # Build extra kwargs for Gemma 4 thinking mode
+        # Build extra kwargs for DeepSeek thinking mode
         extra_body: dict = {}
         if self.enable_thinking:
-            extra_body["chat_template_kwargs"] = {"enable_thinking": True}
+            extra_body["chat_template_kwargs"] = {"thinking": True}
 
         messages = [
             {"role": "system", "content": _SYSTEM_PROMPT},
@@ -138,6 +144,7 @@ class NIMClient:
             model=self.model,
             messages=messages,
             temperature=self.temperature,
+            top_p=self.top_p,
             max_tokens=self.max_tokens,
             stream=True,
             extra_body=extra_body if extra_body else None,
@@ -145,12 +152,19 @@ class NIMClient:
 
         # Aggregate streamed chunks
         full_text = ""
+        thinking_text = ""
         prompt_tokens = 0
         completion_tokens = 0
 
         for chunk in stream:
-            delta = chunk.choices[0].delta if chunk.choices else None
-            if delta and delta.content:
+            if not getattr(chunk, "choices", None):
+                continue
+            delta = chunk.choices[0].delta
+            # DeepSeek reasoning arrives in reasoning_content (separate from content)
+            reasoning = getattr(delta, "reasoning_content", None)
+            if reasoning:
+                thinking_text += reasoning
+            if delta.content is not None:
                 full_text += delta.content
             # Capture usage if the provider sends it in the final chunk
             if hasattr(chunk, "usage") and chunk.usage:
@@ -159,34 +173,18 @@ class NIMClient:
 
         elapsed_ms = (time.perf_counter() - start) * 1000
 
-        # Strip Gemma 4 thinking tokens from the visible answer
-        visible_text = _strip_thinking_tokens(full_text)
-
+        if thinking_text:
+            logger.debug("DeepSeek thinking: %d chars", len(thinking_text))
         logger.info(
-            "NIM response: %.0f ms | ~%d chars (thinking stripped=%s)",
-            elapsed_ms, len(visible_text), self.enable_thinking,
+            "NIM response: %.0f ms | ~%d chars (thinking=%s)",
+            elapsed_ms, len(full_text), self.enable_thinking,
         )
 
         return LLMResponse(
-            text=visible_text,
+            text=full_text.strip(),
             prompt_tokens=prompt_tokens,
             completion_tokens=completion_tokens,
             total_tokens=prompt_tokens + completion_tokens,
             latency_ms=elapsed_ms,
         )
 
-
-# ── Helpers ────────────────────────────────────────────────────────────────────
-
-def _strip_thinking_tokens(text: str) -> str:
-    """
-    Remove Gemma 4 thinking blocks from the response text.
-
-    Gemma 4 wraps its internal reasoning in ``<think>...</think>`` tags.
-    These are useful for debugging but should not be shown to end users
-    in the chat interface.
-    """
-    import re
-    # Remove <think>...</think> blocks (possibly multiline)
-    cleaned = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL)
-    return cleaned.strip()

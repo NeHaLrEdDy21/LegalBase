@@ -10,6 +10,7 @@ interface Props {
   isLoading: boolean;
   error: string | null;
   onSend: (text: string) => void;
+  sessionId?: string | null;
 }
 
 const SUGGESTIONS = [
@@ -19,7 +20,7 @@ const SUGGESTIONS = [
   { icon: "💧", text: "How does the rule in Rylands v Fletcher apply?" },
 ];
 
-export function ChatWindow({ messages, isLoading, error, onSend }: Props) {
+export function ChatWindow({ messages, isLoading, error, onSend, sessionId }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showScrollBtn, setShowScrollBtn] = useState(false);
@@ -27,6 +28,31 @@ export function ChatWindow({ messages, isLoading, error, onSend }: Props) {
   const scrollToBottom = useCallback(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
+
+  const exportChat = (format: "json" | "md") => {
+    if (messages.length === 0) return;
+
+    let content = "";
+    if (format === "json") {
+      content = JSON.stringify({ sessionId, messages }, null, 2);
+    } else {
+      content = `# LegalMind Chat Export\n\n**Session ID:** ${sessionId || "N/A"}\n**Exported:** ${new Date().toISOString()}\n\n`;
+      messages.forEach((msg) => {
+        content += `## ${msg.role === "user" ? "You" : "LegalMind"}\n\n${msg.content}\n\n`;
+        if (msg.sources?.length) {
+          content += `### Sources\n${msg.sources.map((s) => `- ${s.filename} (${(s.relevance_score * 100).toFixed(0)}%)`).join("\n")}\n\n`;
+        }
+      });
+    }
+
+    const blob = new Blob([content], { type: format === "json" ? "application/json" : "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `legalmind-chat-${new Date().getTime()}.${format === "json" ? "json" : "md"}`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   useEffect(() => {
     scrollToBottom();
@@ -52,9 +78,22 @@ export function ChatWindow({ messages, isLoading, error, onSend }: Props) {
             <span className={styles.headerSub}>AI-Powered Legal Research</span>
           </div>
         </div>
-        <div className={styles.headerStatus}>
-          <span className={styles.statusDot} />
-          <span>Online</span>
+        <div className={styles.headerRight}>
+          {messages.length > 0 && (
+            <div className={styles.exportMenu}>
+              <button className={styles.exportBtn} title="Export chat as JSON">
+                <DownloadIcon />
+              </button>
+              <div className={styles.dropdown}>
+                <button onClick={() => exportChat("json")}>Export as JSON</button>
+                <button onClick={() => exportChat("md")}>Export as Markdown</button>
+              </div>
+            </div>
+          )}
+          <div className={styles.headerStatus}>
+            <span className={styles.statusDot} />
+            <span>Online</span>
+          </div>
         </div>
       </header>
 
@@ -163,6 +202,17 @@ function ErrorIcon() {
       <circle cx="12" cy="12" r="10" />
       <line x1="12" y1="8" x2="12" y2="12" />
       <line x1="12" y1="16" x2="12.01" y2="16" />
+    </svg>
+  );
+}
+
+function DownloadIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"
+         strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" y1="15" x2="12" y2="3" />
     </svg>
   );
 }

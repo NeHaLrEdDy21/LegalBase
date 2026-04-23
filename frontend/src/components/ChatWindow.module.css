@@ -98,6 +98,86 @@
   50%     { opacity: 0.4; }
 }
 
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.exportMenu {
+  position: relative;
+}
+
+.exportBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.exportBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #1a1f2e;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  min-width: 160px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: all 0.2s;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 20;
+}
+
+.exportMenu:hover .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dropdown button {
+  display: block;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.875rem;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.dropdown button:first-child {
+  border-radius: 7px 7px 0 0;
+}
+
+.dropdown button:last-child {
+  border-radius: 0 0 7px 7px;
+}
+
+.dropdown button:hover {
+  background: rgba(74, 111, 165, 0.15);
+  color: var(--accent);
+}
+
 /* ── Messages ─────────────────────────────────────────── */
 .messages {
   flex: 1;

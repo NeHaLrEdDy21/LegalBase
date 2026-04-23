@@ -103,6 +103,7 @@ class RAGPipeline:
                 model=settings.nim_model,
                 api_key=nim_api_key,
                 temperature=settings.nim_temperature,
+                top_p=settings.nim_top_p,
                 max_tokens=settings.nim_max_tokens,
                 enable_thinking=settings.nim_enable_thinking,
             )

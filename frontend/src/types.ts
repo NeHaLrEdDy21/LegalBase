@@ -105,3 +105,58 @@ export interface Rule {
 
 export type RuleCreate = Omit<Rule, never>;  // all fields required on create
 export type RuleUpdate = Partial<Omit<Rule, "id">>;  // all optional on update
+
+// ── Document Analysis ──────────────────────────────────────────────────────────
+
+export interface AnalyzeRequest {
+  text: string;
+  document_type?: string;
+}
+
+export interface AnalyzeResponse {
+  summary: string;
+  document_type: string;
+  key_clauses: string[];
+  obligations: string[];
+  risk_flags: string[];
+  missing_clauses: string[];
+  applicable_laws: string[];
+  jurisdiction_notes: string;
+  raw_analysis: string;
+}
+
+// ── Legal Document Generator ───────────────────────────────────────────────────
+
+export interface GenerateDocRequest {
+  document_type: string;
+  party_a: string;
+  party_b: string;
+  key_terms?: Record<string, string>;
+  jurisdiction?: string;
+  additional_context?: string;
+}
+
+export interface GenerateDocResponse {
+  document_type: string;
+  title: string;
+  content: string;
+  applicable_laws: string[];
+  notes: string;
+}
+
+// ── Similarity Search ──────────────────────────────────────────────────────────
+
+export interface SimilarResult {
+  title: string;
+  category: string;
+  jurisdiction: string;
+  excerpt: string;
+  score: number;
+  chunk_index: number;
+}
+
+export interface SimilarResponse {
+  query: string;
+  results: SimilarResult[];
+  total: number;
+}

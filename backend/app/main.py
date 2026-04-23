@@ -16,7 +16,7 @@ from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api.v1 import chat, documents, health, rules
+from app.api.v1 import analyze, chat, documents, generate_doc, health, rules, similar
 from app.config.settings import get_settings
 from app.middleware.rate_limiter import RateLimiterMiddleware
 
@@ -72,6 +72,9 @@ def create_app() -> FastAPI:
     app.include_router(chat.router, prefix=prefix)
     app.include_router(documents.router, prefix=prefix)
     app.include_router(rules.router, prefix=prefix)
+    app.include_router(analyze.router, prefix=prefix)
+    app.include_router(generate_doc.router, prefix=prefix)
+    app.include_router(similar.router, prefix=prefix)
 
     # ── Global exception handlers ──────────────────────────────────────────────
 

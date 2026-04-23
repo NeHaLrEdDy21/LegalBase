@@ -1,15 +1,20 @@
 import axios from "axios";
 import type {
+  AnalyzeRequest,
+  AnalyzeResponse,
   ChatRequest,
   ChatResponse,
+  DeleteDocumentResponse,
+  GenerateDocRequest,
+  GenerateDocResponse,
   IngestTextRequest,
   IngestResponse,
-  DeleteDocumentResponse,
-  ReadinessResponse,
   KnowledgeBaseDocument,
+  ReadinessResponse,
   Rule,
   RuleCreate,
   RuleUpdate,
+  SimilarResponse,
 } from "../types";
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? "/api/v1";
@@ -85,4 +90,16 @@ export const api = {
 
   deleteRule: (ruleId: string) =>
     http.delete(`/rules/${ruleId}`),
+
+  // ── Document Analysis ───────────────────────────────────────────────────────
+  analyzeDocument: (req: AnalyzeRequest) =>
+    http.post<AnalyzeResponse>("/analyze", req).then((r) => r.data),
+
+  // ── Legal Document Generator ────────────────────────────────────────────────
+  generateDoc: (req: GenerateDocRequest) =>
+    http.post<GenerateDocResponse>("/generate-doc", req).then((r) => r.data),
+
+  // ── Similarity Search ───────────────────────────────────────────────────────
+  findSimilar: (q: string, k = 8) =>
+    http.get<SimilarResponse>("/similar", { params: { q, k } }).then((r) => r.data),
 };

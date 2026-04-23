@@ -27,6 +27,7 @@ export function RulesPage() {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [filter, setFilter] = useState<"ALL" | "HIGH" | "MEDIUM" | "LOW">("ALL");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const load = useCallback(async () => {
     try {
@@ -95,7 +96,14 @@ export function RulesPage() {
     }
   };
 
-  const filtered = filter === "ALL" ? rules : rules.filter((r) => r.severity === filter);
+  const filtered = rules.filter((r) => {
+    const severityMatch = filter === "ALL" || r.severity === filter;
+    const searchMatch = searchQuery === "" ||
+      r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      r.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      r.trigger_keywords.some(k => k.toLowerCase().includes(searchQuery.toLowerCase()));
+    return severityMatch && searchMatch;
+  });
 
   return (
     <div className={styles.page}>
@@ -110,6 +118,13 @@ export function RulesPage() {
           </div>
         </div>
         <div className={styles.headerActions}>
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Search rules by name, ID, or keyword…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
           <div className={styles.filterGroup}>
             {(["ALL", "HIGH", "MEDIUM", "LOW"] as const).map((s) => (
               <button
@@ -117,13 +132,13 @@ export function RulesPage() {
                 className={`${styles.filterBtn} ${filter === s ? styles.filterActive : ""} ${s !== "ALL" ? styles[`sev${s}`] : ""}`}
                 onClick={() => setFilter(s)}
               >
-                {s === "ALL" ? `All (${rules.length})` : `${s} (${rules.filter(r => r.severity === s).length})`}
+                {s === "ALL" ? `All` : `${s}`}
               </button>
             ))}
           </div>
           <button className={styles.addBtn} onClick={() => { setShowForm((v) => !v); setError(null); }}>
             <PlusIcon />
-            {showForm ? "Cancel" : "Add rule"}
+            {showForm ? "Cancel" : "Add"}
           </button>
         </div>
       </header>

@@ -15,6 +15,7 @@ export function KnowledgeBasePage({ onChunkCountChange }: Props) {
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<{ current: number; total: number } | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -51,32 +52,48 @@ export function KnowledgeBasePage({ onChunkCountChange }: Props) {
     }
   };
 
-  const handleFile = async (file: File) => {
+  const handleFile = async (file: File): Promise<void> => {
     const MAX = 20 * 1024 * 1024;
-    if (file.size > MAX) { setError("File exceeds 20 MB limit."); return; }
+    if (file.size > MAX) { setError(`File "${file.name}" exceeds 20 MB limit.`); throw new Error("Size exceeded"); }
     const ext = file.name.split(".").pop()?.toLowerCase();
     if (!["pdf", "docx", "txt"].includes(ext ?? "")) {
-      setError("Only PDF, DOCX, and TXT files are supported.");
-      return;
+      setError(`File "${file.name}" type not supported (PDF, DOCX, TXT only).`);
+      throw new Error("Invalid type");
     }
-    setUploading(true);
-    setError(null);
     try {
       const r = await api.ingestFile(file);
       flash(`Indexed "${r.filename}" — ${r.total_chunks} chunk(s) added.`);
       await load();
-    } catch {
-      setError("Upload failed. Check the file format and try again.");
-    } finally {
-      setUploading(false);
+    } catch (err) {
+      setError(`Failed to upload "${file.name}". Check the format and try again.`);
+      throw err;
     }
   };
 
   const onDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
-    const file = e.dataTransfer.files[0];
-    if (file) handleFile(file);
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length > 0) handleMultipleFiles(files);
+  };
+
+  const handleMultipleFiles = async (files: File[]) => {
+    setUploading(true);
+    setError(null);
+    setUploadProgress({ current: 0, total: files.length });
+
+    for (let i = 0; i < files.length; i++) {
+      try {
+        await handleFile(files[i]);
+        setUploadProgress({ current: i + 1, total: files.length });
+      } catch {
+        // Error already handled in handleFile
+        break;
+      }
+    }
+
+    setUploadProgress(null);
+    setUploading(false);
   };
 
   const totalChunks = docs.reduce((s, d) => s + d.chunk_count, 0);
@@ -112,20 +129,27 @@ export function KnowledgeBasePage({ onChunkCountChange }: Props) {
           type="file"
           accept=".pdf,.docx,.txt"
           className={styles.hiddenInput}
-          onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }}
+          multiple
+          onChange={(e) => { const files = Array.from(e.target.files ?? []); if (files.length > 0) handleMultipleFiles(files); e.target.value = ""; }}
         />
         {uploading ? (
           <>
             <div className={styles.spinner} />
-            <span className={styles.dropzoneText}>Indexing document…</span>
+            {uploadProgress && uploadProgress.total > 1 ? (
+              <span className={styles.dropzoneText}>
+                Indexing document {uploadProgress.current} of {uploadProgress.total}…
+              </span>
+            ) : (
+              <span className={styles.dropzoneText}>Indexing document…</span>
+            )}
           </>
         ) : (
           <>
             <UploadIcon />
             <span className={styles.dropzoneText}>
-              Drop a file or <strong>click to browse</strong>
+              Drop file(s) or <strong>click to browse</strong>
             </span>
-            <span className={styles.dropzoneHint}>PDF · DOCX · TXT — max 20 MB</span>
+            <span className={styles.dropzoneHint}>PDF · DOCX · TXT — max 20 MB each, unlimited files</span>
           </>
         )}
       </div>

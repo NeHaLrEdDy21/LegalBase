@@ -6,6 +6,9 @@ import { ChatWindow } from "./components/ChatWindow";
 import { AuthPage } from "./pages/AuthPage";
 import { KnowledgeBasePage } from "./pages/KnowledgeBasePage";
 import { RulesPage } from "./pages/RulesPage";
+import { AnalyzerPage } from "./pages/AnalyzerPage";
+import { DocGeneratorPage } from "./pages/DocGeneratorPage";
+import { SearchPage } from "./pages/SearchPage";
 import { api, setTokenGetter } from "./api/client";
 import type { ChatMessage } from "./types";
 import styles from "./App.module.css";
@@ -140,10 +143,13 @@ function AppShell({ firstName, email, getToken, signOut }: ShellProps) {
       />
       <main className={styles.main}>
         {view === "chat" && (
-          <ChatWindow messages={messages} isLoading={isLoading} error={chatError} onSend={sendMessage} />
+          <ChatWindow messages={messages} isLoading={isLoading} error={chatError} onSend={sendMessage} sessionId={sessionId} />
         )}
         {view === "knowledge-base" && <KnowledgeBasePage onChunkCountChange={setChunkCount} />}
         {view === "rules" && <RulesPage />}
+        {view === "analyzer" && <AnalyzerPage />}
+        {view === "doc-generator" && <DocGeneratorPage />}
+        {view === "search" && <SearchPage />}
       </main>
     </div>
   );

@@ -66,13 +66,13 @@ class Settings(BaseSettings):
         description="NIM endpoint URL — cloud-hosted or self-hosted",
     )
     nim_model: str = Field(
-        "google/gemma-4-31b-it",
+        "deepseek-ai/deepseek-v3.2",
         description="NIM model identifier",
     )
-    nim_temperature: float = Field(0.2, ge=0.0, le=2.0)
-    nim_max_tokens: int = Field(4096, ge=128, le=32768)
-    # Gemma 4 extended thinking — set True for deeper reasoning (much slower on free tier)
-    nim_enable_thinking: bool = Field(False, description="Enable Gemma 4 thinking mode (chat_template_kwargs). WARNING: ~30 tok/s on free tier.")
+    nim_temperature: float = Field(1.0, ge=0.0, le=2.0)
+    nim_top_p: float = Field(0.95, ge=0.0, le=1.0, description="Nucleus sampling probability")
+    nim_max_tokens: int = Field(8192, ge=128, le=32768)
+    nim_enable_thinking: bool = Field(True, description="Enable DeepSeek thinking mode (chat_template_kwargs={thinking:True}). Thinking tokens arrive in reasoning_content and are not shown to users.")
 
     # ── Embeddings ─────────────────────────────────────────────────────────────
     embedding_model: str = Field(
